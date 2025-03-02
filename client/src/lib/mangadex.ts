@@ -41,9 +41,17 @@ export function getCoverImage(mangaId: string, filename: string, size?: '256' | 
   // Format dasar: https://uploads.mangadex.org/covers/:manga-id/:cover-filename
   // Format thumbnail: https://uploads.mangadex.org/covers/:manga-id/:cover-filename.{256, 512}.jpg
   
-  if (size) {
-    return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.${size}.jpg`;
+  // Coba beberapa format URL untuk meningkatkan kemungkinan berhasil
+  try {
+    // Jika format URL dengan thumbnail diminta
+    if (size) {
+      return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.${size}.jpg`;
+    }
+    
+    // Format URL dasar tanpa thumbnail
+    return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
+  } catch (error) {
+    console.error("Error membuat URL cover:", error);
+    return '/placeholder-cover.png';
   }
-  
-  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
 }

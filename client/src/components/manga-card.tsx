@@ -20,19 +20,42 @@ export function MangaCard({ manga, coverUrl }: MangaCardProps) {
             className="object-cover w-full h-full"
             loading="lazy"
             onError={(e) => {
-              // Set a fallback if image fails to load
               console.error(`Failed to load image for ${title}:`, coverUrl);
               
-              // Try loading the original format if thumbnail fails
-              const originalUrl = coverUrl.replace('.256.jpg', '');
-              console.log("Trying original format:", originalUrl);
-              e.currentTarget.src = originalUrl;
-              
-              // Set a final fallback if that still fails
-              e.currentTarget.onerror = () => {
-                console.error(`Original format also failed for ${title}`);
+              // Sequence of fallbacks to try different formats
+              if (coverUrl.includes('.256.jpg')) {
+                // Try without size suffix first
+                const originalUrl = coverUrl.replace('.256.jpg', '');
+                console.log("Trying original format:", originalUrl);
+                e.currentTarget.src = originalUrl;
+                
+                // If that fails, try .512 version
+                e.currentTarget.onerror = () => {
+                  const largerUrl = coverUrl.replace('.256.jpg', '.512.jpg');
+                  console.log("Trying 512px format:", largerUrl);
+                  e.currentTarget.src = largerUrl;
+                  
+                  // If that also fails, use placeholder
+                  e.currentTarget.onerror = () => {
+                    console.error(`All formats failed for ${title}`);
+                    e.currentTarget.src = '/placeholder-cover.png';
+                  };
+                };
+              } else if (!coverUrl.includes('.jpg') && !coverUrl.includes('.png')) {
+                // Try adding .jpg extension if missing
+                const jpgUrl = `${coverUrl}.jpg`;
+                console.log("Trying with jpg extension:", jpgUrl);
+                e.currentTarget.src = jpgUrl;
+                
+                e.currentTarget.onerror = () => {
+                  console.error(`All formats failed for ${title}`);
+                  e.currentTarget.src = '/placeholder-cover.png';
+                };
+              } else {
+                // Direct to placeholder
+                console.error(`Format not recognized for ${title}`);
                 e.currentTarget.src = '/placeholder-cover.png';
-              };
+              }
             }}
           />
         </div>

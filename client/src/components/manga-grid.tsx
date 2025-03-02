@@ -41,12 +41,19 @@ export function MangaGrid({ searchQuery }: MangaGridProps) {
             console.log("Processing manga:", manga.id, "Cover art:", coverArt);
             const coverFilename = coverArt?.attributes?.fileName;
             
-            // Ensure we have a filename and construct proper URL with 256px thumbnail
-            const coverUrl = coverFilename ? 
-              `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}.256.jpg` : 
-              '/placeholder-cover.png'; // Use a placeholder image if no cover found
+            // Debugging info lebih detail
+            console.log(`Manga ${manga.id} cover filename:`, coverFilename);
+            
+            // Coba format URL yang berbeda
+            let coverUrl = '/placeholder-cover.png';
+            
+            if (coverFilename) {
+              // Coba format URL tanpa thumbnail dulu (format asli)
+              coverUrl = `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}`;
+              console.log("Generated original cover URL:", coverUrl);
               
-            console.log("Generated cover URL:", coverUrl);
+              // Dalam fallback kita akan coba dengan thumbnail 256px
+            }
               
             return (
               <MangaCard

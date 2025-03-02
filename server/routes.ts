@@ -22,6 +22,9 @@ export async function registerRoutes(app: Express) {
           'availableTranslatedLanguage[]': ['en'],
           'order[followedCount]': 'desc',
         },
+        headers: {
+          'User-Agent': 'MangaReader/1.0 (https://yoursite.com; admin@yoursite.com)',
+        },
       });
 
       // Log the cover art data untuk debugging
@@ -34,6 +37,10 @@ export async function registerRoutes(app: Express) {
         if (!coverArt || !coverArt.attributes) {
           console.warn("Cover art data missing or incomplete. Check MangaDex API response.");
         }
+
+        // Tambahkan logs detail untuk debugging
+        console.log("Cover filename:", coverArt?.attributes?.fileName);
+        console.log("Manga ID:", firstManga.id);
       }
 
       res.json(response.data);
@@ -49,12 +56,23 @@ export async function registerRoutes(app: Express) {
         params: {
           'includes[]': ['cover_art', 'author', 'artist', 'tag'],
         },
+        headers: {
+          'User-Agent': 'MangaReader/1.0 (https://yoursite.com; admin@yoursite.com)',
+        },
       });
 
       // Log cover art data untuk debugging
       const manga = response.data.data;
       const coverArt = manga.relationships.find((r: any) => r.type === "cover_art");
       console.log("Single manga cover art:", coverArt);
+      
+      // Tambahkan logs detail untuk debugging
+      if (coverArt && coverArt.attributes) {
+        console.log("Cover filename:", coverArt.attributes.fileName);
+        console.log("Test URL akses cover:", `https://uploads.mangadex.org/covers/${manga.id}/${coverArt.attributes.fileName}`);
+      } else {
+        console.warn("Cover art tidak lengkap untuk manga ID:", manga.id);
+      }
 
       res.json(response.data);
     } catch (error: any) {

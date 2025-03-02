@@ -31,17 +31,53 @@ export default function MangaDetails() {
   
   // Construct proper cover URL and add logging for debugging
   console.log("Manga detail cover art:", coverArt);
-  const coverUrl = coverFilename ? 
-    `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}.512.jpg` : 
-    '/placeholder-cover.png'; // Use a placeholder if no cover found - using 512px for detail page
-  console.log("Cover URL:", coverUrl);
+  
+  // Coba tanpa format thumbnail dulu untuk mendapatkan gambar asli
+  let coverUrl = '/placeholder-cover.png';
+  
+  if (coverFilename) {
+    // URL asli tanpa modifikasi
+    coverUrl = `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}`;
+    console.log("Using original cover URL:", coverUrl);
+  }
+  
+  console.log("Final cover URL:", coverUrl);
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-[300px,1fr] gap-8">
         <div>
           <Card className="overflow-hidden">
-            <img src={coverUrl} alt={title} className="w-full" loading="lazy" />
+            <img 
+              src={coverUrl} 
+              alt={title} 
+              className="w-full" 
+              loading="lazy"
+              onError={(e) => {
+                console.error(`Failed to load detail image for ${title}:`, coverUrl);
+                
+                // Coba format dengan thumbnail jika format asli gagal
+                if (!coverUrl.includes('.jpg') && !coverUrl.includes('.png')) {
+                  const withExtension = `${coverUrl}.jpg`;
+                  console.log("Trying with .jpg extension:", withExtension);
+                  e.currentTarget.src = withExtension;
+                  
+                  e.currentTarget.onerror = () => {
+                    // Coba dengan format .512.jpg
+                    const largeThumb = `${coverUrl}.512.jpg`;
+                    console.log("Trying 512px format:", largeThumb);
+                    e.currentTarget.src = largeThumb;
+                    
+                    e.currentTarget.onerror = () => {
+                      console.error(`All formats failed for detail ${title}`);
+                      e.currentTarget.src = '/placeholder-cover.png';
+                    };
+                  };
+                } else {
+                  e.currentTarget.src = '/placeholder-cover.png';
+                }
+              }}
+            />
           </Card>
         </div>
 
