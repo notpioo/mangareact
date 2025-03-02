@@ -8,6 +8,8 @@ interface NavigationSidebarProps {
   setIsOpen: (open: boolean) => void;
 }
 
+// This component is specifically for the navigation sidebar
+
 export function NavigationSidebar({ isOpen, setIsOpen }: NavigationSidebarProps) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
