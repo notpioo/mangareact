@@ -3,6 +3,7 @@ import { MangaCard } from "./manga-card";
 import { searchManga, getCoverImage } from "@/lib/mangadex";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import type { Manga } from "@shared/schema";
 
 interface MangaGridProps {
   searchQuery: string;
@@ -34,14 +35,14 @@ export function MangaGrid({ searchQuery }: MangaGridProps) {
     <div className="space-y-8">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {data?.pages.map((page) =>
-          page.map((manga) => {
+          page.map((manga: Manga) => {
             const coverArt = manga.relationships.find((r) => r.type === "cover_art");
-            const coverFilename = coverArt ? `${coverArt.id}` : "";
+            const coverFilename = coverArt?.attributes?.fileName;
             return (
               <MangaCard
                 key={manga.id}
                 manga={manga}
-                coverUrl={getCoverImage(manga.id, coverFilename)}
+                coverUrl={coverFilename ? getCoverImage(manga.id, coverFilename) : ''}
               />
             );
           })

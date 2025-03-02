@@ -1,0 +1,276 @@
+Cover
+
+
+GET
+/cover
+CoverArt list
+
+Parameters
+Try it out
+Name	Description
+limit
+integer
+(query)
+Default value : 10
+
+10
+offset
+integer
+(query)
+offset
+manga[]
+array[string]
+(query)
+Manga ids (limited to 100 per request)
+
+ids[]
+array[string]
+(query)
+Covers ids (limited to 100 per request)
+
+uploaders[]
+array[string]
+(query)
+User ids (limited to 100 per request)
+
+locales[]
+array[string]
+(query)
+Locales of cover art (limited to 100 per request)
+
+order
+object
+(query)
+{
+  "createdAt": "asc",
+  "updatedAt": "asc",
+  "volume": "asc"
+}
+includes[]
+array[string]
+(query)
+Available values : manga, user
+
+--mangauser
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": "ok",
+  "response": "collection",
+  "data": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "type": "cover_art",
+      "attributes": {
+        "volume": "string",
+        "fileName": "string",
+        "description": "string",
+        "locale": "string",
+        "version": 1,
+        "createdAt": "string",
+        "updatedAt": "string"
+      },
+      "relationships": [
+        {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "type": "string",
+          "related": "monochrome",
+          "attributes": {}
+        }
+      ]
+    }
+  ],
+  "limit": 0,
+  "offset": 0,
+  "total": 0
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "result": "error",
+  "errors": [
+    {
+      "id": "string",
+      "status": 0,
+      "title": "string",
+      "detail": "string",
+      "context": "string"
+    }
+  ]
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "result": "error",
+  "errors": [
+    {
+      "id": "string",
+      "status": 0,
+      "title": "string",
+      "detail": "string",
+      "context": "string"
+    }
+  ]
+}
+No links
+
+POST
+/cover/{mangaOrCoverId}
+Upload Cover
+
+
+
+GET
+/cover/{mangaOrCoverId}
+Get Cover
+
+Parameters
+Try it out
+Name	Description
+includes[]
+array[string]
+(query)
+Available values : manga, user
+
+--mangauser
+mangaOrCoverId *
+string($uuid)
+(path)
+Is Manga UUID on POST
+
+mangaOrCoverId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": "string",
+  "response": "entity",
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "type": "cover_art",
+    "attributes": {
+      "volume": "string",
+      "fileName": "string",
+      "description": "string",
+      "locale": "string",
+      "version": 1,
+      "createdAt": "string",
+      "updatedAt": "string"
+    },
+    "relationships": [
+      {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "type": "string",
+        "related": "monochrome",
+        "attributes": {}
+      }
+    ]
+  }
+}
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "result": "error",
+  "errors": [
+    {
+      "id": "string",
+      "status": 0,
+      "title": "string",
+      "detail": "string",
+      "context": "string"
+    }
+  ]
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "result": "error",
+  "errors": [
+    {
+      "id": "string",
+      "status": 0,
+      "title": "string",
+      "detail": "string",
+      "context": "string"
+    }
+  ]
+}
+No links
+404	
+CoverArt not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "result": "error",
+  "errors": [
+    {
+      "id": "string",
+      "status": 0,
+      "title": "string",
+      "detail": "string",
+      "context": "string"
+    }
+  ]
+}
+No links
+
+PUT
+/cover/{mangaOrCoverId}
+Edit Cover
+
+
+
+DELETE
+/cover/{mangaOrCoverId}
+Delete Cover
+
+

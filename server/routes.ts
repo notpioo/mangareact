@@ -17,6 +17,7 @@ export async function registerRoutes(app: Express) {
           limit,
           offset,
           includes: ["cover_art"],
+          contentRating: ["safe", "suggestive"],
         },
       });
       res.json(response.data);
@@ -47,6 +48,7 @@ export async function registerRoutes(app: Express) {
           offset,
           translatedLanguage: ["en"],
           order: { chapter: "desc" },
+          includes: ["scanlation_group"],
         },
       });
       res.json(response.data);

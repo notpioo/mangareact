@@ -27,15 +27,15 @@ export default function MangaDetails() {
   const title = manga.attributes.title.en || Object.values(manga.attributes.title)[0];
   const description = manga.attributes.description.en || Object.values(manga.attributes.description)[0];
   const coverArt = manga.relationships.find((r) => r.type === "cover_art");
-  const coverFilename = coverArt ? `${coverArt.id}` : "";
-  const coverUrl = getCoverImage(manga.id, coverFilename);
+  const coverFilename = coverArt?.attributes?.fileName;
+  const coverUrl = coverFilename ? getCoverImage(manga.id, coverFilename) : '';
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-[300px,1fr] gap-8">
         <div>
           <Card className="overflow-hidden">
-            <img src={coverUrl} alt={title} className="w-full" />
+            <img src={coverUrl} alt={title} className="w-full" loading="lazy" />
           </Card>
         </div>
 

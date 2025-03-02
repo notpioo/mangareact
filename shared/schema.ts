@@ -39,6 +39,12 @@ export interface Manga {
   relationships: Array<{
     id: string;
     type: string;
+    attributes?: {
+      fileName: string;
+      description?: string;
+      volume?: string;
+      version?: number;
+    };
   }>;
 }
 
