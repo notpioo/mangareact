@@ -1,13 +1,15 @@
-import { useState } from "react";
 import { MangaGrid } from "@/components/manga-grid";
 import { Header } from "@/components/header";
 
-export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
+interface HomeProps {
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+}
 
+export default function Home({ searchQuery, onSearchChange }: HomeProps) {
   return (
     <div className="space-y-6">
-      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <Header searchQuery={searchQuery} onSearchChange={onSearchChange} />
       <div className="p-6">
         <MangaGrid searchQuery={searchQuery} />
       </div>

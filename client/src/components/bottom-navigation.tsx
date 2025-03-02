@@ -1,42 +1,41 @@
-
-import { Link, useLocation } from "wouter";
-import { Home, Library, History } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { SearchBar } from "./search-bar";
 
-export function BottomNavigation() {
-  const [location] = useLocation();
+interface FloatingSearchButtonProps {
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+}
+
+export function BottomNavigation({ searchQuery, onSearchChange }: FloatingSearchButtonProps) {
+  const [showSearch, setShowSearch] = useState(false);
 
   return (
-    <div className="fixed bottom-0 left-0 z-10 w-full h-16 bg-gradient-to-r from-orange-500 to-amber-500 md:hidden">
-      <div className="grid h-full grid-cols-3">
-        <Link href="/">
-          <a className={cn(
-            "flex flex-col items-center justify-center text-white",
-            location === "/" ? "bg-white/20" : "hover:bg-white/10"
-          )}>
-            <Home className="h-6 w-6" />
-            <span className="text-xs mt-1">Home</span>
-          </a>
-        </Link>
-        <Link href="/library">
-          <a className={cn(
-            "flex flex-col items-center justify-center text-white",
-            location === "/library" ? "bg-white/20" : "hover:bg-white/10"
-          )}>
-            <Library className="h-6 w-6" />
-            <span className="text-xs mt-1">Library</span>
-          </a>
-        </Link>
-        <Link href="/history">
-          <a className={cn(
-            "flex flex-col items-center justify-center text-white",
-            location === "/history" ? "bg-white/20" : "hover:bg-white/10"
-          )}>
-            <History className="h-6 w-6" />
-            <span className="text-xs mt-1">History</span>
-          </a>
-        </Link>
-      </div>
-    </div>
+    <>
+      {showSearch && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex flex-col">
+          <div className="p-4 border-b">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Search Manga</h3>
+              <button 
+                onClick={() => setShowSearch(false)}
+                className="p-2 rounded-full hover:bg-gray-100"
+              >
+                ✕
+              </button>
+            </div>
+            <SearchBar value={searchQuery} onChange={onSearchChange} />
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={() => setShowSearch(true)}
+        className="fixed bottom-6 right-6 p-4 rounded-full bg-orange-500 text-white shadow-lg md:hidden z-40 flex items-center justify-center"
+      >
+        <Search className="h-6 w-6" />
+      </button>
+    </>
   );
 }
