@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
+import { Home, Clock, TrendingUp, Tag, Bookmark, Info } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface NavigationSidebarProps {
   isOpen: boolean;
@@ -9,47 +11,39 @@ interface NavigationSidebarProps {
 }
 
 // This component is specifically for the navigation sidebar
-
 export function NavigationSidebar({ isOpen, setIsOpen }: NavigationSidebarProps) {
+  const menuItems = [
+    { path: "/", label: "Home", icon: <Home size={18} /> },
+    { path: "/latest", label: "Latest Updates", icon: <Clock size={18} /> },
+    { path: "/popular", label: "Popular Manga", icon: <TrendingUp size={18} /> },
+    { path: "/genres", label: "Genres", icon: <Tag size={18} /> },
+    { path: "/bookmarks", label: "Bookmarks", icon: <Bookmark size={18} /> },
+  ];
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="left" className="bg-background border-r border-border w-[250px] p-0">
-        <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-border">
-            <h2 className="text-xl font-bold text-header-foreground">Menu</h2>
-          </div>
-          <nav className="flex-1 p-4">
-            <ul className="space-y-2">
-              <li>
-                <a href="/" className="flex items-center p-2 rounded-md hover:bg-accent text-foreground">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="/latest" className="flex items-center p-2 rounded-md hover:bg-accent text-foreground">
-                  Latest Updates
-                </a>
-              </li>
-              <li>
-                <a href="/popular" className="flex items-center p-2 rounded-md hover:bg-accent text-foreground">
-                  Popular Manga
-                </a>
-              </li>
-              <li>
-                <a href="/genres" className="flex items-center p-2 rounded-md hover:bg-accent text-foreground">
-                  Genres
-                </a>
-              </li>
-              <li>
-                <a href="/bookmarks" className="flex items-center p-2 rounded-md hover:bg-accent text-foreground">
-                  Bookmarks
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div className="p-4 border-t border-border">
-            <p className="text-sm text-muted-foreground">MangaTZ v1.0</p>
-          </div>
+      <SheetContent side="left" className="p-0">
+        <div className="p-6 border-b border-border/40">
+          <h2 className="text-2xl font-bold">Menu</h2>
+        </div>
+        <div className="flex flex-col space-y-3 p-4">
+          {menuItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 p-3 rounded-md bg-card border border-border/30 shadow-sm
+                         transition-all duration-200 hover:bg-primary/10 hover:border-primary/30 hover:translate-x-1
+                         hover:shadow-md active:scale-95"
+            >
+              <span className="text-primary">{item.icon}</span>
+              <span className="font-medium">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-auto p-6 border-t border-border/40 flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">MangaTZ v1.0</p>
+          <Info size={16} className="text-muted-foreground" />
         </div>
       </SheetContent>
     </Sheet>
