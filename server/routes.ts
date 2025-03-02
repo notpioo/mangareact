@@ -1,3 +1,4 @@
+
 import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
@@ -129,11 +130,6 @@ export async function registerRoutes(app: Express) {
     } catch (error: any) {
       console.error("Error fetching cover image:", error.message);
       res.redirect('/placeholder-cover.png');
-    }
-  });
-    } catch (error: any) {
-      console.error("Error fetching manga details:", error.response?.data || error.message);
-      res.status(500).json({ error: "Failed to fetch manga details" });
     }
   });
 
