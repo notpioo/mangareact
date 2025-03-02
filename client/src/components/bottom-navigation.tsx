@@ -1,14 +1,15 @@
-import { Search } from "lucide-react";
-import { cn } from "@/lib/utils";
+
+import { Search, X } from "lucide-react";
 import { useState } from "react";
 import { SearchBar } from "./search-bar";
+import { Button } from "./ui/button";
 
-interface FloatingSearchButtonProps {
+interface SearchToggleProps {
   searchQuery: string;
   onSearchChange: (value: string) => void;
 }
 
-export function BottomNavigation({ searchQuery, onSearchChange }: FloatingSearchButtonProps) {
+export function BottomNavigation({ searchQuery, onSearchChange }: SearchToggleProps) {
   const [showSearch, setShowSearch] = useState(false);
 
   return (
@@ -18,24 +19,29 @@ export function BottomNavigation({ searchQuery, onSearchChange }: FloatingSearch
           <div className="p-4 border-b">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-semibold">Search Manga</h3>
-              <button 
+              <Button 
+                variant="ghost"
+                size="icon"
                 onClick={() => setShowSearch(false)}
-                className="p-2 rounded-full hover:bg-gray-100"
+                className="rounded-full"
               >
-                ✕
-              </button>
+                <X className="h-5 w-5" />
+              </Button>
             </div>
             <SearchBar value={searchQuery} onChange={onSearchChange} />
           </div>
         </div>
       )}
 
-      <button
-        onClick={() => setShowSearch(true)}
-        className="fixed bottom-6 right-6 p-4 rounded-full bg-orange-500 text-white shadow-lg md:hidden z-40 flex items-center justify-center"
-      >
-        <Search className="h-6 w-6" />
-      </button>
+      <div className="sticky bottom-4 md:hidden w-full flex justify-center z-40">
+        <Button
+          onClick={() => setShowSearch(true)}
+          className="bg-orange-500 hover:bg-orange-600 text-white shadow-md rounded-full px-6"
+        >
+          <Search className="h-4 w-4 mr-2" />
+          <span>Search</span>
+        </Button>
+      </div>
     </>
   );
 }
