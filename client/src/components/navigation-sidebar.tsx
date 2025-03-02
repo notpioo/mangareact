@@ -26,17 +26,13 @@ export function NavigationSidebar() {
   return (
     <div
       className={cn(
-        "h-screen border-r flex flex-col transition-all duration-200",
+        "h-screen border-r flex flex-col transition-all",
         expanded ? "w-64" : "w-16"
       )}
     >
       <div className="p-4 flex items-center justify-between border-b">
-        {expanded && (
-          <h1 className="font-bold text-xl text-orange-500 whitespace-nowrap overflow-hidden">
-            MangaTZ
-          </h1>
-        )}
-        <div className="flex gap-2 ml-auto">
+        {expanded && <h1 className="font-bold text-xl text-orange-500">MangaTZ</h1>}
+        <div className="flex gap-2">
           <ThemeToggle />
           <Button
             variant="ghost"
