@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { MangaGrid } from "@/components/manga-grid";
 import { Header } from "@/components/header";
 
-export default function Home() {
+export function Home() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -14,3 +15,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;
