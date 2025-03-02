@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
@@ -11,14 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
-import {
-  Sidebar,
-  SidebarSection,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarTrigger
-} from "./ui/sidebar";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 
 export function NavigationSidebar() {
   const [location] = useLocation();
@@ -32,7 +24,7 @@ export function NavigationSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarSection>
+      <SidebarContent>
         <SidebarMenu>
           <Link href="/">
             <SidebarMenuItem 
@@ -62,8 +54,8 @@ export function NavigationSidebar() {
             </SidebarMenuItem>
           </Link>
         </SidebarMenu>
-      </SidebarSection>
-      
+      </SidebarContent>
+
       <div className="mt-auto p-4">
         <ThemeToggle />
       </div>
