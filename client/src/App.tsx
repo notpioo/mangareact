@@ -6,17 +6,24 @@ import { NavigationSidebar } from "@/components/navigation-sidebar";
 import Home from "@/pages/home";
 import MangaDetails from "@/pages/manga/[id]";
 import NotFound from "@/pages/not-found";
+import { useState } from "react";
+import { BottomNavigation } from "@/components/bottom-navigation";
 
 function Router() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <div className="flex">
       <NavigationSidebar />
-      <main className="flex-1">
+      <main className="flex-1 pb-16 md:pb-0">
         <Switch>
-          <Route path="/" component={Home} />
+          <Route path="/">
+            <Home searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+          </Route>
           <Route path="/manga/:id" component={MangaDetails} />
           <Route component={NotFound} />
         </Switch>
+        <BottomNavigation searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       </main>
     </div>
   );
