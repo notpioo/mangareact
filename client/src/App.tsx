@@ -1,33 +1,35 @@
-import { Switch, Route } from "wouter";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
-import { Toaster } from "@/components/ui/toaster";
-import { NavigationSidebar } from "@/components/navigation-sidebar";
-import Home from "@/pages/home";
-import MangaDetails from "@/pages/manga/[id]";
-import NotFound from "@/pages/not-found";
 
-function Router() {
-  return (
-    <div className="flex">
-      <NavigationSidebar />
-      <main className="flex-1">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/manga/:id" component={MangaDetails} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-    </div>
-  );
-}
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "./components/theme-provider";
+import { Home } from "./pages/home";
+import { MangaDetails } from "./pages/manga/[id]";
+import { Header } from "./components/header";
+import { NavigationSidebar } from "./components/navigation-sidebar";
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
-    </QueryClientProvider>
+    <Router>
+      <ThemeProvider defaultTheme="dark" storageKey="mangatx-ui-theme">
+        <div className="min-h-screen bg-background">
+          <Header onMenuToggle={toggleSidebar} />
+          <NavigationSidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+          
+          <main className="container mx-auto px-4 py-4">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/manga/:id" element={<MangaDetails />} />
+            </Routes>
+          </main>
+        </div>
+      </ThemeProvider>
+    </Router>
   );
 }
 

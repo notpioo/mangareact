@@ -1,52 +1,61 @@
+
 import React, { useState } from "react";
-import { Search, X } from "lucide-react";
+import { Search, Menu, User } from "lucide-react";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { SearchBar } from "./search-bar";
 
 interface HeaderProps {
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
+  onMenuToggle: () => void;
 }
 
-export function Header({ searchQuery, onSearchChange }: HeaderProps) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (isSearchOpen) {
-      onSearchChange("");
-    }
-  };
+export function Header({ onMenuToggle }: HeaderProps) {
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   return (
-    <div className="sticky top-0 z-10 w-full bg-gradient-to-r from-orange-500 to-amber-500 shadow-md">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        {!isSearchOpen && <h1 className="text-2xl font-bold text-white">mangaTZ</h1>}
-        <div className={`flex items-center ${isSearchOpen ? 'w-full' : ''}`}>
-          {isSearchOpen ? (
-            <div className="flex items-center w-full animate-in slide-in-from-right">
-              <SearchBar value={searchQuery} onChange={onSearchChange} />
+    <header className="sticky top-0 z-40 w-full border-b bg-header">
+      <div className="container flex h-16 items-center px-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="mr-2 text-header-foreground hover:bg-header-accent hover:text-header-foreground"
+          onClick={onMenuToggle}
+        >
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Menu</span>
+        </Button>
+        
+        <div className="flex items-center justify-between flex-1">
+          <h1 className="text-xl font-bold tracking-tight text-orange-300">
+            MangaTZ
+          </h1>
+
+          <div className="flex items-center gap-2">
+            {isSearchExpanded ? (
+              <div className="relative flex items-center">
+                <SearchBar 
+                  onClose={() => setIsSearchExpanded(false)} 
+                  expanded={true}
+                />
+              </div>
+            ) : (
               <Button
                 variant="ghost"
                 size="icon"
-                className="ml-2 text-white hover:bg-orange-600"
-                onClick={toggleSearch}
+                className="text-header-foreground hover:bg-header-accent hover:text-header-foreground"
+                onClick={() => setIsSearchExpanded(true)}
               >
-                <X className="h-5 w-5" />
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
               </Button>
-            </div>
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-orange-600"
-              onClick={toggleSearch}
-            >
-              <Search className="h-5 w-5" />
-            </Button>
-          )}
+            )}
+
+            <Avatar className="h-8 w-8 bg-orange-300">
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
