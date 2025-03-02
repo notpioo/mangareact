@@ -21,8 +21,18 @@ export function MangaCard({ manga, coverUrl }: MangaCardProps) {
             loading="lazy"
             onError={(e) => {
               // Set a fallback if image fails to load
-              e.currentTarget.src = 'https://uploads.mangadex.org/covers/0000/no-cover.jpg';
               console.error(`Failed to load image for ${title}:`, coverUrl);
+              
+              // Try loading the original format if thumbnail fails
+              const originalUrl = coverUrl.replace('.256.jpg', '');
+              console.log("Trying original format:", originalUrl);
+              e.currentTarget.src = originalUrl;
+              
+              // Set a final fallback if that still fails
+              e.currentTarget.onerror = () => {
+                console.error(`Original format also failed for ${title}`);
+                e.currentTarget.src = '/placeholder-cover.png';
+              };
             }}
           />
         </div>

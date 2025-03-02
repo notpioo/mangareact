@@ -34,9 +34,16 @@ export async function getChapters(mangaId: string, limit = 100, offset = 0) {
   return response.data.data as Chapter[];
 }
 
-export function getCoverImage(mangaId: string, filename: string) {
+export function getCoverImage(mangaId: string, filename: string, size?: '256' | '512') {
   if (!filename) return '';
-  // According to MangaDex docs:
-  // https://uploads.mangadex.org/covers/:manga-id/:cover-filename.256.jpg
+  
+  // Menurut dokumentasi MangaDex:
+  // Format dasar: https://uploads.mangadex.org/covers/:manga-id/:cover-filename
+  // Format thumbnail: https://uploads.mangadex.org/covers/:manga-id/:cover-filename.{256, 512}.jpg
+  
+  if (size) {
+    return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.${size}.jpg`;
+  }
+  
   return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
 }
