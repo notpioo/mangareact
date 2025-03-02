@@ -1,24 +1,15 @@
-
-import { Link, useLocation } from "wouter";
-import { Home, Library, History, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { SearchBar } from "./search-bar";
 
-interface BottomNavigationProps {
+interface FloatingSearchButtonProps {
   searchQuery: string;
   onSearchChange: (value: string) => void;
 }
 
-export function BottomNavigation({ searchQuery, onSearchChange }: BottomNavigationProps) {
-  const [location] = useLocation();
+export function BottomNavigation({ searchQuery, onSearchChange }: FloatingSearchButtonProps) {
   const [showSearch, setShowSearch] = useState(false);
-
-  const items = [
-    { href: "/", icon: Home, label: "Home" },
-    { href: "/library", icon: Library, label: "Library" },
-    { href: "/history", icon: History, label: "History" },
-  ];
 
   return (
     <>
@@ -39,30 +30,12 @@ export function BottomNavigation({ searchQuery, onSearchChange }: BottomNavigati
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md md:hidden z-40">
-        <div className="flex items-center justify-around">
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex flex-col items-center py-2 px-4",
-                location === item.href ? "text-orange-500" : "text-gray-500"
-              )}
-            >
-              <item.icon className="h-5 w-5" />
-              <span className="text-xs mt-1">{item.label}</span>
-            </Link>
-          ))}
-          <button
-            onClick={() => setShowSearch(true)}
-            className="flex flex-col items-center py-2 px-4 text-gray-500"
-          >
-            <Search className="h-5 w-5" />
-            <span className="text-xs mt-1">Search</span>
-          </button>
-        </div>
-      </div>
+      <button
+        onClick={() => setShowSearch(true)}
+        className="fixed bottom-6 right-6 p-4 rounded-full bg-orange-500 text-white shadow-lg md:hidden z-40 flex items-center justify-center"
+      >
+        <Search className="h-6 w-6" />
+      </button>
     </>
   );
 }

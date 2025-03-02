@@ -15,7 +15,7 @@ function Router() {
   return (
     <div className="flex">
       <NavigationSidebar />
-      <main className="flex-1 pb-16 md:pb-0">
+      <main className="flex-1">
         <Switch>
           <Route path="/">
             <Home searchQuery={searchQuery} onSearchChange={setSearchQuery} />
