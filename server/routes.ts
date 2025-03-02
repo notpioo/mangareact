@@ -96,20 +96,33 @@ export async function registerRoutes(app: Express) {
         responseType: 'stream',
         headers: {
           'User-Agent': 'MangaReader/1.0 (https://yoursite.com; admin@yoursite.com)',
-          'Referer': 'https://mangadex.org/'
-        }
+          'Referer': 'https://mangadex.org/',
+          'Accept': 'image/jpeg,image/png,image/webp,image/*,*/*'
+        },
+        timeout: 10000, // 10 detik timeout
+        validateStatus: (status) => status < 500 // Memproses respons 400 agar tidak throw error
       });
+      
+      // Jika status error, kirim placeholder
+      if (response.status >= 400) {
+        console.error(`Error status ${response.status} for image: ${url}`);
+        // Redirect ke placeholder
+        return res.redirect('/placeholder-cover.png');
+      }
       
       // Forward semua header dari response
       Object.keys(response.headers).forEach(header => {
         res.setHeader(header, response.headers[header]);
       });
       
+      // Set cache control untuk meningkatkan performa
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // cache 1 hari
+      
       // Kirim data gambar
       response.data.pipe(res);
     } catch (error: any) {
       console.error("Error fetching cover image:", error.message);
-      res.status(404).send('Image not found');
+      res.redirect('/placeholder-cover.png');
     }
   });
 

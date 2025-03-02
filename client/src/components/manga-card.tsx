@@ -21,41 +21,59 @@ export function MangaCard({ manga, coverUrl }: MangaCardProps) {
             loading="lazy"
             onError={(e) => {
               console.error(`Failed to load image for ${title}:`, coverUrl);
-              
+
               // Coba fallback dengan format yang berbeda melalui proxy
-              if (coverUrl.includes('size=256')) {
-                // Coba tanpa size (format asli)
-                const originalUrl = coverUrl.replace('?size=256', '');
-                console.log("Trying original format through proxy:", originalUrl);
-                e.currentTarget.src = originalUrl;
-                
-                // Jika masih gagal, coba ukuran 512px
-                e.currentTarget.onerror = () => {
-                  const largerUrl = coverUrl.replace('size=256', 'size=512');
-                  console.log("Trying 512px format through proxy:", largerUrl);
-                  e.currentTarget.src = largerUrl;
-                  
-                  // Jika masih gagal, gunakan placeholder
-                  e.currentTarget.onerror = () => {
-                    console.error(`All formats failed for ${title}`);
+                try {
+                  if (coverUrl.includes('size=256') && e.currentTarget) {
+                    // Coba tanpa size (format asli)
+                    const originalUrl = coverUrl.replace('?size=256', '');
+                    console.log("Trying original format through proxy:", originalUrl);
+                    e.currentTarget.src = originalUrl;
+
+                    // Jika masih gagal, coba ukuran 512px
+                    e.currentTarget.onerror = (event) => {
+                      try {
+                        const target = event.currentTarget as HTMLImageElement;
+                        if (target) {
+                          const largerUrl = coverUrl.replace('size=256', 'size=512');
+                          console.log("Trying 512px format through proxy:", largerUrl);
+                          target.src = largerUrl;
+
+                          // Jika masih gagal, gunakan placeholder
+                          target.onerror = (finalEvent) => {
+                            try {
+                              const finalTarget = finalEvent.currentTarget as HTMLImageElement;
+                              if (finalTarget) {
+                                console.error(`All formats failed for ${title}`);
+                                finalTarget.src = '/placeholder-cover.png';
+                              }
+                            } catch (err) {
+                              console.error("Error setting placeholder image:", err);
+                            }
+                          };
+                        }
+                      } catch (err) {
+                        console.error("Error in secondary fallback:", err);
+                      }
+                    };
+                  } else if (!coverUrl.includes('?size=') && e.currentTarget) {
+                    // Try adding .jpg extension if missing
+                    const jpgUrl = `${coverUrl}.jpg`;
+                    console.log("Trying with jpg extension:", jpgUrl);
+                    e.currentTarget.src = jpgUrl;
+
+                    e.currentTarget.onerror = () => {
+                      console.error(`All formats failed for ${title}`);
+                      e.currentTarget.src = '/placeholder-cover.png';
+                    };
+                  } else {
+                    // Direct to placeholder
+                    console.error(`Format not recognized for ${title}`);
                     e.currentTarget.src = '/placeholder-cover.png';
-                  };
-                };
-              } else if (!coverUrl.includes('?size=')) {
-                // Try adding .jpg extension if missing
-                const jpgUrl = `${coverUrl}.jpg`;
-                console.log("Trying with jpg extension:", jpgUrl);
-                e.currentTarget.src = jpgUrl;
-                
-                e.currentTarget.onerror = () => {
-                  console.error(`All formats failed for ${title}`);
-                  e.currentTarget.src = '/placeholder-cover.png';
-                };
-              } else {
-                // Direct to placeholder
-                console.error(`Format not recognized for ${title}`);
-                e.currentTarget.src = '/placeholder-cover.png';
-              }
+                  }
+                } catch (err) {
+                  console.error("Error in image error handling:", err);
+                }
             }}
           />
         </div>
