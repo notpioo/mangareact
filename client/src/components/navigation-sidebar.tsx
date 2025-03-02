@@ -13,7 +13,7 @@ interface NavigationSidebarProps {
 export function NavigationSidebar({ isOpen, setIsOpen }: NavigationSidebarProps) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="left" className="bg-header border-r border-border w-[250px] p-0">
+      <SheetContent side="left" className="bg-background border-r border-border w-[250px] p-0">
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-border">
             <h2 className="text-xl font-bold text-header-foreground">Menu</h2>
