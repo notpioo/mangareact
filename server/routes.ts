@@ -74,6 +74,12 @@ export async function registerRoutes(app: Express) {
         console.warn("Cover art tidak lengkap untuk manga ID:", manga.id);
       }
 
+      res.json(response.data);
+    } catch (error: any) {
+      console.error("Error fetching manga details:", error.response?.data || error.message);
+      res.status(500).json({ error: "Failed to fetch manga details" });
+    }
+  });
 
   // Proxy untuk gambar cover MangaDex
   app.get("/api/proxy/cover/:mangaId/:filename", async (req, res) => {
@@ -125,9 +131,6 @@ export async function registerRoutes(app: Express) {
       res.redirect('/placeholder-cover.png');
     }
   });
-
-
-      res.json(response.data);
     } catch (error: any) {
       console.error("Error fetching manga details:", error.response?.data || error.message);
       res.status(500).json({ error: "Failed to fetch manga details" });
