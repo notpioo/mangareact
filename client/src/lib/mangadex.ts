@@ -37,19 +37,17 @@ export async function getChapters(mangaId: string, limit = 100, offset = 0) {
 export function getCoverImage(mangaId: string, filename: string, size?: '256' | '512') {
   if (!filename) return '';
   
-  // Menurut dokumentasi MangaDex:
-  // Format dasar: https://uploads.mangadex.org/covers/:manga-id/:cover-filename
-  // Format thumbnail: https://uploads.mangadex.org/covers/:manga-id/:cover-filename.{256, 512}.jpg
-  
-  // Coba beberapa format URL untuk meningkatkan kemungkinan berhasil
+  // Gunakan proxy server untuk mengatasi masalah CORS
   try {
-    // Jika format URL dengan thumbnail diminta
+    // Base URL untuk proxy
+    const baseUrl = `/api/proxy/cover/${mangaId}/${filename}`;
+    
+    // Tambahkan parameter size jika ada
     if (size) {
-      return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.${size}.jpg`;
+      return `${baseUrl}?size=${size}`;
     }
     
-    // Format URL dasar tanpa thumbnail
-    return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
+    return baseUrl;
   } catch (error) {
     console.error("Error membuat URL cover:", error);
     return '/placeholder-cover.png';

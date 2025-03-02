@@ -22,26 +22,26 @@ export function MangaCard({ manga, coverUrl }: MangaCardProps) {
             onError={(e) => {
               console.error(`Failed to load image for ${title}:`, coverUrl);
               
-              // Sequence of fallbacks to try different formats
-              if (coverUrl.includes('.256.jpg')) {
-                // Try without size suffix first
-                const originalUrl = coverUrl.replace('.256.jpg', '');
-                console.log("Trying original format:", originalUrl);
+              // Coba fallback dengan format yang berbeda melalui proxy
+              if (coverUrl.includes('size=256')) {
+                // Coba tanpa size (format asli)
+                const originalUrl = coverUrl.replace('?size=256', '');
+                console.log("Trying original format through proxy:", originalUrl);
                 e.currentTarget.src = originalUrl;
                 
-                // If that fails, try .512 version
+                // Jika masih gagal, coba ukuran 512px
                 e.currentTarget.onerror = () => {
-                  const largerUrl = coverUrl.replace('.256.jpg', '.512.jpg');
-                  console.log("Trying 512px format:", largerUrl);
+                  const largerUrl = coverUrl.replace('size=256', 'size=512');
+                  console.log("Trying 512px format through proxy:", largerUrl);
                   e.currentTarget.src = largerUrl;
                   
-                  // If that also fails, use placeholder
+                  // Jika masih gagal, gunakan placeholder
                   e.currentTarget.onerror = () => {
                     console.error(`All formats failed for ${title}`);
                     e.currentTarget.src = '/placeholder-cover.png';
                   };
                 };
-              } else if (!coverUrl.includes('.jpg') && !coverUrl.includes('.png')) {
+              } else if (!coverUrl.includes('?size=')) {
                 // Try adding .jpg extension if missing
                 const jpgUrl = `${coverUrl}.jpg`;
                 console.log("Trying with jpg extension:", jpgUrl);

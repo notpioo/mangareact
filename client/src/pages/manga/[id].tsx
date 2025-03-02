@@ -32,13 +32,13 @@ export default function MangaDetails() {
   // Construct proper cover URL and add logging for debugging
   console.log("Manga detail cover art:", coverArt);
   
-  // Coba tanpa format thumbnail dulu untuk mendapatkan gambar asli
+  // Gunakan proxy untuk gambar
   let coverUrl = '/placeholder-cover.png';
   
   if (coverFilename) {
-    // URL asli tanpa modifikasi
-    coverUrl = `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}`;
-    console.log("Using original cover URL:", coverUrl);
+    // Gunakan ukuran 512px untuk detail page
+    coverUrl = getCoverImage(manga.id, coverFilename, '512');
+    console.log("Using proxy cover URL:", coverUrl);
   }
   
   console.log("Final cover URL:", coverUrl);

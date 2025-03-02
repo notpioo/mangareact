@@ -74,6 +74,46 @@ export async function registerRoutes(app: Express) {
         console.warn("Cover art tidak lengkap untuk manga ID:", manga.id);
       }
 
+
+  // Proxy untuk gambar cover MangaDex
+  app.get("/api/proxy/cover/:mangaId/:filename", async (req, res) => {
+    try {
+      const { mangaId, filename } = req.params;
+      const { size } = req.query;
+      
+      let url = `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
+      
+      // Tambahkan ukuran jika ada
+      if (size && ['256', '512'].includes(size as string)) {
+        url = `${url}.${size}.jpg`;
+      }
+      
+      console.log(`Proxying cover image: ${url}`);
+      
+      const response = await axios({
+        method: 'GET',
+        url: url,
+        responseType: 'stream',
+        headers: {
+          'User-Agent': 'MangaReader/1.0 (https://yoursite.com; admin@yoursite.com)',
+          'Referer': 'https://mangadex.org/'
+        }
+      });
+      
+      // Forward semua header dari response
+      Object.keys(response.headers).forEach(header => {
+        res.setHeader(header, response.headers[header]);
+      });
+      
+      // Kirim data gambar
+      response.data.pipe(res);
+    } catch (error: any) {
+      console.error("Error fetching cover image:", error.message);
+      res.status(404).send('Image not found');
+    }
+  });
+
+
       res.json(response.data);
     } catch (error: any) {
       console.error("Error fetching manga details:", error.response?.data || error.message);

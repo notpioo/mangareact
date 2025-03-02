@@ -44,15 +44,13 @@ export function MangaGrid({ searchQuery }: MangaGridProps) {
             // Debugging info lebih detail
             console.log(`Manga ${manga.id} cover filename:`, coverFilename);
             
-            // Coba format URL yang berbeda
+            // Gunakan fungsi getCoverImage untuk mendapatkan URL dengan proxy
             let coverUrl = '/placeholder-cover.png';
             
             if (coverFilename) {
-              // Coba format URL tanpa thumbnail dulu (format asli)
-              coverUrl = `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}`;
-              console.log("Generated original cover URL:", coverUrl);
-              
-              // Dalam fallback kita akan coba dengan thumbnail 256px
+              // Gunakan ukuran 256px untuk grid
+              coverUrl = getCoverImage(manga.id, coverFilename, '256');
+              console.log("Generated cover URL with proxy:", coverUrl);
             }
               
             return (
