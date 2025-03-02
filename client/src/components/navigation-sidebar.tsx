@@ -11,10 +11,11 @@ import {
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./theme-toggle";
 
 export function NavigationSidebar() {
   const [location] = useLocation();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const items = [
     { href: "/", icon: Home, label: "Home" },
@@ -30,14 +31,17 @@ export function NavigationSidebar() {
       )}
     >
       <div className="p-4 flex items-center justify-between border-b">
-        {expanded && <h1 className="font-bold text-xl">MangaTZ</h1>}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        </Button>
+        {expanded && <h1 className="font-bold text-xl text-orange-500">MangaTZ</h1>}
+        <div className="flex gap-2">
+          <ThemeToggle />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </Button>
+        </div>
       </div>
 
       <ScrollArea className="flex-1">

@@ -35,5 +35,5 @@ export async function getChapters(mangaId: string, limit = 100, offset = 0) {
 }
 
 export function getCoverImage(mangaId: string, filename: string) {
-  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
+  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.256.jpg`;
 }
