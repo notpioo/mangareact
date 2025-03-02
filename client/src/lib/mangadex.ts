@@ -38,5 +38,5 @@ export function getCoverImage(mangaId: string, filename: string) {
   if (!filename) return '';
   // According to MangaDex docs:
   // https://uploads.mangadex.org/covers/:manga-id/:cover-filename.256.jpg
-  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.256.jpg`;
+  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
 }

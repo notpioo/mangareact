@@ -19,6 +19,10 @@ export function MangaCard({ manga, coverUrl }: MangaCardProps) {
             alt={title}
             className="object-cover w-full h-full"
             loading="lazy"
+            onError={(e) => {
+              // Set a fallback if image fails to load
+              e.currentTarget.src = 'https://uploads.mangadex.org/covers/0000/no-cover.jpg';
+            }}
           />
         </div>
         <CardContent className="p-4">

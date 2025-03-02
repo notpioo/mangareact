@@ -28,7 +28,13 @@ export default function MangaDetails() {
   const description = manga.attributes.description.en || Object.values(manga.attributes.description)[0];
   const coverArt = manga.relationships.find((r) => r.type === "cover_art");
   const coverFilename = coverArt?.attributes?.fileName;
-  const coverUrl = coverFilename ? getCoverImage(manga.id, coverFilename) : '';
+  
+  // Construct proper cover URL and add logging for debugging
+  console.log("Manga detail cover art:", coverArt);
+  const coverUrl = coverFilename ? 
+    getCoverImage(manga.id, coverFilename) : 
+    '/placeholder-cover.png'; // Use a placeholder if no cover found
+  console.log("Cover URL:", coverUrl);
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

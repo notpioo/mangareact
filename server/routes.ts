@@ -29,6 +29,11 @@ export async function registerRoutes(app: Express) {
       if (firstManga) {
         const coverArt = firstManga.relationships.find((r: any) => r.type === "cover_art");
         console.log("Cover art data:", coverArt);
+        
+        // Make sure covers are included in the response data
+        if (!coverArt || !coverArt.attributes) {
+          console.warn("Cover art data missing or incomplete. Check MangaDex API response.");
+        }
       }
 
       res.json(response.data);
