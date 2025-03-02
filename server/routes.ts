@@ -16,8 +16,10 @@ export async function registerRoutes(app: Express) {
           title,
           limit,
           offset,
-          includes: ["cover_art"],
-          contentRating: ["safe", "suggestive"],
+          'includes[]': ['cover_art', 'author'],
+          'contentRating[]': ['safe', 'suggestive'],
+          hasAvailableChapters: true,
+          'availableTranslatedLanguage[]': ['en']
         },
       });
       res.json(response.data);
@@ -30,7 +32,7 @@ export async function registerRoutes(app: Express) {
     try {
       const response = await axios.get(`${MANGADEX_API}/manga/${req.params.id}`, {
         params: {
-          includes: ["cover_art"],
+          'includes[]': ['cover_art', 'author'],
         },
       });
       res.json(response.data);
@@ -46,9 +48,9 @@ export async function registerRoutes(app: Express) {
         params: {
           limit,
           offset,
-          translatedLanguage: ["en"],
-          order: { chapter: "desc" },
-          includes: ["scanlation_group"],
+          'translatedLanguage[]': ['en'],
+          'order[chapter]': 'desc',
+          'includes[]': ['scanlation_group'],
         },
       });
       res.json(response.data);

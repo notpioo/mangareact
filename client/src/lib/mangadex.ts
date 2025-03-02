@@ -36,7 +36,7 @@ export async function getChapters(mangaId: string, limit = 100, offset = 0) {
 
 export function getCoverImage(mangaId: string, filename: string) {
   if (!filename) return '';
-  // According to MangaDex docs, we need to keep the original filename with its extension
-  // and append .256.jpg for the thumbnail version
-  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
+  // According to MangaDex docs:
+  // https://uploads.mangadex.org/covers/:manga-id/:cover-filename.256.jpg
+  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}.256.jpg`;
 }
