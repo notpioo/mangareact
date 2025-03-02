@@ -1,5 +1,8 @@
+
+import { useState } from "react";
+import { Search, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 
 interface SearchBarProps {
   value: string;
@@ -7,15 +10,46 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ value, onChange }: SearchBarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSearch = () => {
+    setIsOpen(!isOpen);
+    if (isOpen) {
+      onChange("");
+    }
+  };
+
   return (
-    <div className="relative">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-      <Input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Search manga..."
-        className="pl-10"
-      />
+    <div className="relative flex items-center">
+      {isOpen ? (
+        <div className="flex w-full items-center">
+          <Input
+            type="text"
+            placeholder="Search manga..."
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="rounded-l-md border-r-0"
+            autoFocus
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-l-none border-l-0"
+            onClick={toggleSearch}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      ) : (
+        <Button
+          variant="outline"
+          size="icon"
+          className="ml-auto"
+          onClick={toggleSearch}
+        >
+          <Search className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   );
 }
