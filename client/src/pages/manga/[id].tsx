@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Book, Loader2 } from "lucide-react";
-import { Header } from "@/components/header"; // Added import for Header component
 
 export default function MangaDetails() {
   const { id } = useParams();
@@ -29,91 +28,88 @@ export default function MangaDetails() {
   const description = manga.attributes.description.en || Object.values(manga.attributes.description)[0];
   const coverArt = manga.relationships.find((r) => r.type === "cover_art");
   const coverFilename = coverArt?.attributes?.fileName;
-
+  
   // Construct proper cover URL and add logging for debugging
   console.log("Manga detail cover art:", coverArt);
-
+  
   // Gunakan proxy untuk gambar
   let coverUrl = '/placeholder-cover.png';
-
+  
   if (coverFilename) {
     // Gunakan ukuran 512px untuk detail page
     coverUrl = getCoverImage(manga.id, coverFilename, '512');
     console.log("Using proxy cover URL:", coverUrl);
   }
-
+  
   console.log("Final cover URL:", coverUrl);
 
   return (
-    <div>
-      <Header searchQuery="" onSearchChange={() => {}} /> {/* Added Header component */}
-      <div className="p-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-[300px,1fr] gap-8">
-          <div>
-            <Card className="overflow-hidden">
-              <img 
-                src={coverUrl} 
-                alt={title} 
-                className="w-full" 
-                loading="lazy"
-                onError={(e) => {
-                  console.error(`Failed to load detail image for ${title}:`, coverUrl);
-
-                  // Coba format dengan thumbnail jika format asli gagal
-                  if (!coverUrl.includes('.jpg') && !coverUrl.includes('.png')) {
-                    const withExtension = `${coverUrl}.jpg`;
-                    console.log("Trying with .jpg extension:", withExtension);
-                    e.currentTarget.src = withExtension;
-
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-[300px,1fr] gap-8">
+        <div>
+          <Card className="overflow-hidden">
+            <img 
+              src={coverUrl} 
+              alt={title} 
+              className="w-full" 
+              loading="lazy"
+              onError={(e) => {
+                console.error(`Failed to load detail image for ${title}:`, coverUrl);
+                
+                // Coba format dengan thumbnail jika format asli gagal
+                if (!coverUrl.includes('.jpg') && !coverUrl.includes('.png')) {
+                  const withExtension = `${coverUrl}.jpg`;
+                  console.log("Trying with .jpg extension:", withExtension);
+                  e.currentTarget.src = withExtension;
+                  
+                  e.currentTarget.onerror = () => {
+                    // Coba dengan format .512.jpg
+                    const largeThumb = `${coverUrl}.512.jpg`;
+                    console.log("Trying 512px format:", largeThumb);
+                    e.currentTarget.src = largeThumb;
+                    
                     e.currentTarget.onerror = () => {
-                      // Coba dengan format .512.jpg
-                      const largeThumb = `${coverUrl}.512.jpg`;
-                      console.log("Trying 512px format:", largeThumb);
-                      e.currentTarget.src = largeThumb;
-
-                      e.currentTarget.onerror = () => {
-                        console.error(`All formats failed for detail ${title}`);
-                        e.currentTarget.src = '/placeholder-cover.png';
-                      };
+                      console.error(`All formats failed for detail ${title}`);
+                      e.currentTarget.src = '/placeholder-cover.png';
                     };
-                  } else {
-                    e.currentTarget.src = '/placeholder-cover.png';
-                  }
-                }}
-              />
-            </Card>
+                  };
+                } else {
+                  e.currentTarget.src = '/placeholder-cover.png';
+                }
+              }}
+            />
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">{title}</h1>
+            <p className="text-muted-foreground">{description}</p>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{title}</h1>
-              <p className="text-muted-foreground">{description}</p>
-            </div>
-
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Chapters</h2>
-                {isLoadingChapters ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <ScrollArea className="h-[400px]">
-                    <div className="space-y-2">
-                      {chapters?.map((chapter) => (
-                        <Button
-                          key={chapter.id}
-                          variant="ghost"
-                          className="w-full justify-start"
-                        >
-                          <Book className="w-4 h-4 mr-2" />
-                          Chapter {chapter.attributes.chapter}: {chapter.attributes.title}
-                        </Button>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="text-xl font-semibold mb-4">Chapters</h2>
+              {isLoadingChapters ? (
+                <Loader2 className="w-6 h-6 animate-spin" />
+              ) : (
+                <ScrollArea className="h-[400px]">
+                  <div className="space-y-2">
+                    {chapters?.map((chapter) => (
+                      <Button
+                        key={chapter.id}
+                        variant="ghost"
+                        className="w-full justify-start"
+                      >
+                        <Book className="w-4 h-4 mr-2" />
+                        Chapter {chapter.attributes.chapter}: {chapter.attributes.title}
+                      </Button>
+                    ))}
+                  </div>
+                </ScrollArea>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

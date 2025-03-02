@@ -13,16 +13,6 @@ import {
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 
-// New Header component
-const Header = () => {
-  return (
-    <header className="bg-orange-500 text-white p-4 shadow-md">
-      <h1 className="text-2xl font-bold">MangaTZ</h1>
-    </header>
-  );
-};
-
-
 export function NavigationSidebar() {
   const [location] = useLocation();
   const [expanded, setExpanded] = useState(false);
