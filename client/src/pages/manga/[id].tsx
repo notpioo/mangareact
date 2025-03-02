@@ -26,8 +26,9 @@ export default function MangaDetails() {
 
   const title = manga.attributes.title.en || Object.values(manga.attributes.title)[0];
   const description = manga.attributes.description.en || Object.values(manga.attributes.description)[0];
-  const cover = manga.relationships.find((r) => r.type === "cover_art");
-  const coverUrl = getCoverImage(manga.id, cover?.id || "");
+  const coverArt = manga.relationships.find((r) => r.type === "cover_art");
+  const coverFilename = coverArt ? `${coverArt.id}` : "";
+  const coverUrl = getCoverImage(manga.id, coverFilename);
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
