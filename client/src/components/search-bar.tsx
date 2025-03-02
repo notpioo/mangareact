@@ -15,7 +15,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search manga..."
-        className="pl-10 w-full bg-white/90 focus:bg-white transition-colors"
+        className="pl-10 w-full bg-white/90 focus:bg-white transition-colors rounded-md"
         autoFocus
       />
     </div>

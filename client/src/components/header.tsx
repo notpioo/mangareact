@@ -21,10 +21,10 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
   return (
     <div className="sticky top-0 z-10 w-full bg-gradient-to-r from-orange-500 to-amber-500 shadow-md">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">mangaTZ</h1>
-        <div className="flex items-center">
+        {!isSearchOpen && <h1 className="text-2xl font-bold text-white">mangaTZ</h1>}
+        <div className={`flex items-center ${isSearchOpen ? 'w-full' : ''}`}>
           {isSearchOpen ? (
-            <div className="flex items-center w-full max-w-sm animate-in slide-in-from-right">
+            <div className="flex items-center w-full animate-in slide-in-from-right">
               <SearchBar value={searchQuery} onChange={onSearchChange} />
               <Button
                 variant="ghost"
