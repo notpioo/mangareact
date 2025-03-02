@@ -1,0 +1,83 @@
+> rest-express@1.0.0 dev
+9:18:30 AM [express] serving on port 5000
+Cover art data: {
+  id: 'e6583e52-1125-4c50-8db4-e8d6cf3fb144',
+  type: 'cover_art',
+  attributes: {
+    description: '',
+    volume: '4',
+    fileName: 'e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg',
+    locale: 'ko',
+    createdAt: '2023-04-20T17:37:25+00:00',
+    updatedAt: '2023-04-20T17:37:25+00:00',
+    version: 1
+  }
+}
+Cover filename: e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg
+Manga ID: 32d76d19-8a05-4db0-9fc2-e0b0648fe9d0
+9:18:37 AM [express] GET /api/proxy/manga 304 in 185ms :: {"result":"ok","response":"collection","da…
+Cover art data: {
+  id: 'e6583e52-1125-4c50-8db4-e8d6cf3fb144',
+  type: 'cover_art',
+  attributes: {
+    description: '',
+    volume: '4',
+    fileName: 'e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg',
+    locale: 'ko',
+    createdAt: '2023-04-20T17:37:25+00:00',
+    updatedAt: '2023-04-20T17:37:25+00:00',
+    version: 1
+  }
+}
+Cover filename: e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg
+Manga ID: 32d76d19-8a05-4db0-9fc2-e0b0648fe9d0
+9:18:39 AM [express] GET /api/proxy/manga 304 in 50ms :: {"result":"ok","response":"collection","dat…
+Cover art data: {
+  id: 'e6583e52-1125-4c50-8db4-e8d6cf3fb144',
+  type: 'cover_art',
+  attributes: {
+    description: '',
+    volume: '4',
+    fileName: 'e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg',
+    locale: 'ko',
+    createdAt: '2023-04-20T17:37:25+00:00',
+    updatedAt: '2023-04-20T17:37:25+00:00',
+    version: 1
+  }
+}
+Cover filename: e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg
+Manga ID: 32d76d19-8a05-4db0-9fc2-e0b0648fe9d0
+9:19:07 AM [express] GET /api/proxy/manga 304 in 164ms :: {"result":"ok","response":"collection","da…
+Single manga cover art: {
+  id: 'e6583e52-1125-4c50-8db4-e8d6cf3fb144',
+  type: 'cover_art',
+  attributes: {
+    description: '',
+    volume: '4',
+    fileName: 'e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg',
+    locale: 'ko',
+    createdAt: '2023-04-20T17:37:25+00:00',
+    updatedAt: '2023-04-20T17:37:25+00:00',
+    version: 1
+  }
+}
+Cover filename: e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg
+Test URL akses cover: https://uploads.mangadex.org/covers/32d76d19-8a05-4db0-9fc2-e0b0648fe9d0/e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg
+9:19:10 AM [express] GET /api/proxy/manga/32d76d19-8a05-4db0-9fc2-e0b0648fe9d0 304 in 94ms :: {"resu…
+9:19:10 AM [express] GET /api/proxy/manga/32d76d19-8a05-4db0-9fc2-e0b0648fe9d0/feed 304 in 472ms :: …
+Cover art data: {
+  id: 'e6583e52-1125-4c50-8db4-e8d6cf3fb144',
+  type: 'cover_art',
+  attributes: {
+    description: '',
+    volume: '4',
+    fileName: 'e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg',
+    locale: 'ko',
+    createdAt: '2023-04-20T17:37:25+00:00',
+    updatedAt: '2023-04-20T17:37:25+00:00',
+    version: 1
+  }
+}
+Cover filename: e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg
+Manga ID: 32d76d19-8a05-4db0-9fc2-e0b0648fe9d0
+9:19:14 AM [express] GET /api/proxy/manga 304 in 161ms :: {"result":"ok","response":"collection","da…
