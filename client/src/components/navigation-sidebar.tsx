@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ThemeToggle } from "./theme-toggle";
 import {
   ChevronRight,
   Home,
@@ -31,13 +32,16 @@ export function NavigationSidebar() {
     >
       <div className="p-4 flex items-center justify-between border-b">
         {expanded && <h1 className="font-bold text-xl">MangaTZ</h1>}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </Button>
+        </div>
       </div>
 
       <ScrollArea className="flex-1">

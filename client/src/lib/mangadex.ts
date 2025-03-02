@@ -34,6 +34,6 @@ export async function getChapters(mangaId: string, limit = 100, offset = 0) {
   return response.data.data as Chapter[];
 }
 
-export function getCoverImage(mangaId: string, filename: string) {
-  return `https://uploads.mangadex.org/covers/${mangaId}/${filename}`;
+export function getCoverImage(mangaId: string, coverId: string) {
+  return `/api/proxy/cover/${mangaId}/${coverId}.jpg`;
 }

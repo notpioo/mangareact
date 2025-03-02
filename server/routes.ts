@@ -17,6 +17,10 @@ export async function registerRoutes(app: Express) {
           limit,
           offset,
           includes: ["cover_art"],
+          'order[followedCount]': 'desc',
+          'contentRating[]': ['safe', 'suggestive'],
+          'hasAvailableChapters': true,
+          'availableTranslatedLanguage[]': ['en']
         },
       });
       res.json(response.data);
@@ -29,7 +33,7 @@ export async function registerRoutes(app: Express) {
     try {
       const response = await axios.get(`${MANGADEX_API}/manga/${req.params.id}`, {
         params: {
-          includes: ["cover_art"],
+          includes: ["cover_art", "author", "artist"],
         },
       });
       res.json(response.data);
@@ -52,6 +56,28 @@ export async function registerRoutes(app: Express) {
       res.json(response.data);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch chapters" });
+    }
+  });
+
+  // Cover proxy route
+  app.get("/api/proxy/cover/:mangaId/:fileName", async (req, res) => {
+    try {
+      const { mangaId, fileName } = req.params;
+      const coverUrl = `https://uploads.mangadex.org/covers/${mangaId}/${fileName}`;
+
+      const response = await axios.get(coverUrl, {
+        responseType: 'stream',
+        timeout: 5000
+      });
+
+      // Set cache headers
+      res.set('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
+      res.set('Content-Type', response.headers['content-type']);
+
+      response.data.pipe(res);
+    } catch (error) {
+      console.error('Error fetching cover:', error.message);
+      res.status(500).json({ error: "Failed to fetch cover" });
     }
   });
 
