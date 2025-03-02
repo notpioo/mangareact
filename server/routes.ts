@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
 import { insertReadingHistorySchema } from "@shared/schema";
-import axios from "axios";
+import { getMangaDexClient } from "./mangadex";
 
 const MANGADEX_API = "https://api.mangadex.org";
 
@@ -11,7 +11,8 @@ export async function registerRoutes(app: Express) {
   app.get("/api/proxy/manga", async (req, res) => {
     try {
       const { title, limit, offset } = req.query;
-      const response = await axios.get(`${MANGADEX_API}/manga`, {
+      const client = await getMangaDexClient();
+      const response = await client.get(`/manga`, {
         params: {
           title,
           limit,
@@ -24,19 +25,22 @@ export async function registerRoutes(app: Express) {
       });
       res.json(response.data);
     } catch (error) {
+      console.error("Error fetching manga:", error);
       res.status(500).json({ error: "Failed to fetch manga" });
     }
   });
 
   app.get("/api/proxy/manga/:id", async (req, res) => {
     try {
-      const response = await axios.get(`${MANGADEX_API}/manga/${req.params.id}`, {
+      const client = await getMangaDexClient();
+      const response = await client.get(`/manga/${req.params.id}`, {
         params: {
           'includes[]': ['cover_art', 'author'],
         },
       });
       res.json(response.data);
     } catch (error) {
+      console.error("Error fetching manga details:", error);
       res.status(500).json({ error: "Failed to fetch manga details" });
     }
   });
@@ -44,7 +48,8 @@ export async function registerRoutes(app: Express) {
   app.get("/api/proxy/manga/:id/feed", async (req, res) => {
     try {
       const { limit, offset } = req.query;
-      const response = await axios.get(`${MANGADEX_API}/manga/${req.params.id}/feed`, {
+      const client = await getMangaDexClient();
+      const response = await client.get(`/manga/${req.params.id}/feed`, {
         params: {
           limit,
           offset,
@@ -55,6 +60,7 @@ export async function registerRoutes(app: Express) {
       });
       res.json(response.data);
     } catch (error) {
+      console.error("Error fetching chapters:", error);
       res.status(500).json({ error: "Failed to fetch chapters" });
     }
   });
