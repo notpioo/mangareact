@@ -37,6 +37,8 @@ export function MangaGrid({ searchQuery }: MangaGridProps) {
         {data?.pages.map((page) =>
           page.map((manga: Manga) => {
             const coverArt = manga.relationships.find((r) => r.type === "cover_art");
+            // Log cover art data untuk debugging
+            console.log("Processing manga:", manga.id, "Cover art:", coverArt);
             const coverFilename = coverArt?.attributes?.fileName;
             return (
               <MangaCard

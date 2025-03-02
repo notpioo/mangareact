@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
 import { insertReadingHistorySchema } from "@shared/schema";
-import { getMangaDexClient } from "./mangadex";
+import axios from "axios";
 
 const MANGADEX_API = "https://api.mangadex.org";
 
@@ -11,8 +11,7 @@ export async function registerRoutes(app: Express) {
   app.get("/api/proxy/manga", async (req, res) => {
     try {
       const { title, limit, offset } = req.query;
-      const client = await getMangaDexClient();
-      const response = await client.get(`/manga`, {
+      const response = await axios.get(`${MANGADEX_API}/manga`, {
         params: {
           title,
           limit,
@@ -20,27 +19,41 @@ export async function registerRoutes(app: Express) {
           'includes[]': ['cover_art', 'author'],
           'contentRating[]': ['safe', 'suggestive'],
           hasAvailableChapters: true,
-          'availableTranslatedLanguage[]': ['en']
+          'availableTranslatedLanguage[]': ['en'],
+          'order[followedCount]': 'desc',
         },
       });
+
+      // Log the cover art data untuk debugging
+      const firstManga = response.data.data[0];
+      if (firstManga) {
+        const coverArt = firstManga.relationships.find((r: any) => r.type === "cover_art");
+        console.log("Cover art data:", coverArt);
+      }
+
       res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching manga:", error);
+    } catch (error: any) {
+      console.error("Error fetching manga:", error.response?.data || error.message);
       res.status(500).json({ error: "Failed to fetch manga" });
     }
   });
 
   app.get("/api/proxy/manga/:id", async (req, res) => {
     try {
-      const client = await getMangaDexClient();
-      const response = await client.get(`/manga/${req.params.id}`, {
+      const response = await axios.get(`${MANGADEX_API}/manga/${req.params.id}`, {
         params: {
-          'includes[]': ['cover_art', 'author'],
+          'includes[]': ['cover_art', 'author', 'artist', 'tag'],
         },
       });
+
+      // Log cover art data untuk debugging
+      const manga = response.data.data;
+      const coverArt = manga.relationships.find((r: any) => r.type === "cover_art");
+      console.log("Single manga cover art:", coverArt);
+
       res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching manga details:", error);
+    } catch (error: any) {
+      console.error("Error fetching manga details:", error.response?.data || error.message);
       res.status(500).json({ error: "Failed to fetch manga details" });
     }
   });
@@ -48,8 +61,7 @@ export async function registerRoutes(app: Express) {
   app.get("/api/proxy/manga/:id/feed", async (req, res) => {
     try {
       const { limit, offset } = req.query;
-      const client = await getMangaDexClient();
-      const response = await client.get(`/manga/${req.params.id}/feed`, {
+      const response = await axios.get(`${MANGADEX_API}/manga/${req.params.id}/feed`, {
         params: {
           limit,
           offset,
@@ -59,8 +71,8 @@ export async function registerRoutes(app: Express) {
         },
       });
       res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching chapters:", error);
+    } catch (error: any) {
+      console.error("Error fetching chapters:", error.response?.data || error.message);
       res.status(500).json({ error: "Failed to fetch chapters" });
     }
   });
