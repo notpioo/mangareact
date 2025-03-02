@@ -32,7 +32,7 @@ export default function MangaDetails() {
   // Construct proper cover URL and add logging for debugging
   console.log("Manga detail cover art:", coverArt);
   const coverUrl = coverFilename ? 
-    getCoverImage(manga.id, coverFilename) : 
+    `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}` : 
     '/placeholder-cover.png'; // Use a placeholder if no cover found
   console.log("Cover URL:", coverUrl);
 

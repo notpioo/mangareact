@@ -22,6 +22,7 @@ export function MangaCard({ manga, coverUrl }: MangaCardProps) {
             onError={(e) => {
               // Set a fallback if image fails to load
               e.currentTarget.src = 'https://uploads.mangadex.org/covers/0000/no-cover.jpg';
+              console.error(`Failed to load image for ${title}:`, coverUrl);
             }}
           />
         </div>

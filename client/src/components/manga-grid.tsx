@@ -43,7 +43,7 @@ export function MangaGrid({ searchQuery }: MangaGridProps) {
             
             // Ensure we have a filename and construct proper URL
             const coverUrl = coverFilename ? 
-              getCoverImage(manga.id, coverFilename) : 
+              `https://uploads.mangadex.org/covers/${manga.id}/${coverFilename}` : 
               '/placeholder-cover.png'; // Use a placeholder image if no cover found
               
             return (
